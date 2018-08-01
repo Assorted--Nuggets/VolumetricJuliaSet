@@ -1,0 +1,12 @@
+#version 330
+
+layout(location=0) in vec4 position;
+out vec4 Position;
+uniform mat4 viewProjectionMatrix;
+uniform mat4 modelMatrix;
+uniform mat4 translation;
+uniform mat4 rotation;
+void main() {
+	gl_Position = position*modelMatrix*viewProjectionMatrix;
+	Position = position*translation;
+}

@@ -1,0 +1,28 @@
+#version 330
+
+in vec4 Position;
+uniform vec4 juliapos;
+out vec4 gl_FragColor;
+
+void main() {
+	vec4 lightPos = vec4(0, 0, 0, 1);
+	vec4 negLightPos = vec4(0, 0, 1, 1);
+	vec4 delta = Position - lightPos;
+	vec4 delta2 = Position - negLightPos;
+	float brightness = 1/dot(delta, delta);
+	float darkness = 1/dot(delta2, delta2);
+	vec2 z;
+
+	z.x = Position.x*3;
+	z.y = Position.y*3;
+	float i;
+	for(i=0; i < 200; i++) {
+		float x = (z.x*z.x - z.y*z.y);
+		float y = (z.y*z.x + z.x*z.y) + Position.z*juliapos.x;
+		
+		if((x*x + y*y) > 4.0) break;
+		z.x = x;
+		z.y = y;
+	}
+	gl_FragColor = vec4((brightness-darkness/3)/10+0.5, (brightness-darkness/3)/15+0.5, (brightness-darkness/2)/10+0.5, (i/1000));
+}
